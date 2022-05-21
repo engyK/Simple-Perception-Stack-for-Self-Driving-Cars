@@ -3,12 +3,27 @@ import cv2  # Import the OpenCV library to enable computer vision
 import numpy as np  # Import the NumPy scientific computing library
 import edge_detection as edge  # Handles the detection of lane lines
 import matplotlib.pyplot as plt
+import argparse
 
 # Make sure the video file is in the same directory as your code
-# filename = 'project_video.mp4'
 
-# filename = 'harder_challenge_video.mp4'
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", "--input", type=str, default="",
+                    help="path to input video file")
+parser.add_argument("-o", "--output", type=str, default="",
+                    help="path to (optional) output video file")
+parser.add_argument("-d", "--display", type=int, default=1,
+                    help="display output or not (1/0)")
+parser.add_argument("-ht", "--height", type=int, default=1200,
+                    help="height of output")
+parser.add_argument("-wt", "--width", type=int, default=700,
+                    help="width of output")
+parser.add_argument("-c", "--confidence", type=float, default=0.5,
+                    help="confidence threshold")
+parser.add_argument("-t", "--threshold", type=float, default=0.4,
+                    help="non-maximum supression threshold")
 
+args = parser.parse_args()
 # --- Global Variable for DEBUG Mode ---
 debugFlag = False
 
@@ -65,15 +80,14 @@ class Lane:
         # Four corners of the trapezoid-shaped region of interest
         # You need to find these corners manually.
         centerOfCar = carPosition / 2.0
-        if self.filename == "project_video.mp4":  # projectVideo
-            print('here111111')
+        if args.input == "project_video.mp4":  # projectVideo
             self.roi_points = np.float32([
                 (int(0.421 * width), int(0.68 * height)),  # Top-left corner
                 (183, height - 1),  # Bottom-left corner
                 (int(0.958 * width), height - 1),  # Bottom-right corner
                 (int(0.61 * width), int(0.682 * height))  # Top-right corner
             ])
-        elif self.filename == "challenge_video.mp4":
+        elif args.input == "challenge_video.mp4":
             self.roi_points = np.float32([  # ---
           
                 (int(0.478 * width), int(0.71 * height)),  # Top-left corner
@@ -81,7 +95,7 @@ class Lane:
                 (int(1.2 * width), height - 1),  # Bottom-right corner
                 (int(0.68 * width), int(0.71 * height))  # Top-right corner
             ])
-        elif self.filename == "harder_challenge_video.mp4":
+        elif args.input == "harder_challenge_video.mp4":
             self.roi_points = np.float32([  # ---
                 (int(0.411 * width), int(0.68 * height)),  # Top-left corner
                 (183, height - 1),  # Bottom-left corner
@@ -747,11 +761,11 @@ def main():
             debugFlag = True
 
     # Load a video
-    cap = cv2.VideoCapture(filename)
+    cap = cv2.VideoCapture(args.input)
 
     # --- save the output video ---
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    result = cv2.VideoWriter(output_filename,
+    result = cv2.VideoWriter(args.output,
                              fourcc,
                              output_frames_per_second,
                              file_size)
