@@ -3,11 +3,11 @@
 **Download the repo**
 
 ## Phase 1
-1.   to run the normal mode
+1.**to run the normal mode:**<br>
  write this command in cmd  >>
     **python Lane.py -i inputVideoPath -o outputVideoPath**
 
-2.  to run debug mode
+2.**to run debug mode:**<br>
  write this command in cmd  >>
     **python debug.py -i inputVideoPath -o outputVideoPath**
     
