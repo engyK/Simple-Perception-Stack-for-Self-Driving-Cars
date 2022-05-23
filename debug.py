@@ -577,14 +577,15 @@ class Lane:
 
             # Perform binary thresholding on the R (red) and green  channel of the
 
-            _, r_thresh = edge.threshold(frame[:, :, 2], thresh=(100, 255))
+            _, r_thresh = edge.threshold(frame[:, :, 2], thresh=(120, 255))
             # edit
-            _, g_thresh = edge.threshold(frame[:, :, 2], thresh=(100, 255))
+            _, g_thresh = edge.threshold(frame[:, :, 2], thresh=(120, 255))
 
             # Lane lines should be pure in color and have high red  and green channels values
             # Bitwise AND operation to reduce noise and black-out any pixels that
             rs_binary1 = cv2.bitwise_and(s_binary, r_thresh)
-            rs_binary = cv2.bitwise_and(rs_binary1, g_thresh)
+            rs_binary2 = cv2.bitwise_and(rs_binary1, g_thresh)
+            rs_binary = cv2.bitwise_not(rs_binary2)
         else:
             _, sxbinary = edge.threshold(hls[:, :, 1], thresh=(200, 255))
             sxbinary = edge.blur_gaussian(sxbinary, ksize=3)  # Reduce noise
@@ -825,8 +826,9 @@ def main():
             #DEBUG PIPELINE
             w = int(lane_line_markings.shape[1] * 0.3)
             h = int(lane_line_markings.shape[0] * 0.3)
-
-            lane_line_markings = cv2.resize(lane_line_markings, (w, h))
+            lane_line_markings1 = cv2.resize(lane_line_markings, (w, h))
+            lane_line_markings = cv2.bitwise_not(lane_line_markings1)
+      
             warped_frame = cv2.resize(warped_frame, (w, h))
             outImage = cv2.resize(outImage, (w, h))
 
