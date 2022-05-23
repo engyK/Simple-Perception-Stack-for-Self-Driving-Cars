@@ -4,9 +4,7 @@ import numpy as np  # Import the NumPy scientific computing library
 import edge_detection as edge  # Handles the detection of lane lines
 import matplotlib.pyplot as plt
 import argparse
-
-# Make sure the video file is in the same directory as your code
-
+# --- Global Variable for DEBUG Mode ---
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", type=str, default="",
                     help="path to input video file")
@@ -24,7 +22,7 @@ parser.add_argument("-t", "--threshold", type=float, default=0.4,
                     help="non-maximum supression threshold")
 
 args = parser.parse_args()
-# --- Global Variable for DEBUG Mode ---
+
 debugFlag = False
 
 file_size = (1920, 1080)  # Assumes 1920x1080 mp4
@@ -81,6 +79,7 @@ class Lane:
         # You need to find these corners manually.
         centerOfCar = carPosition / 2.0
         if args.input == "project_video.mp4":  # projectVideo
+            print('here111111')
             self.roi_points = np.float32([
                 (int(0.421 * width), int(0.68 * height)),  # Top-left corner
                 (183, height - 1),  # Bottom-left corner
@@ -561,7 +560,7 @@ class Lane:
         ################### Isolate possible lane line edges ######################
 
         # Perform Sobel edge detection on the L (lightness) channel of
-        if self.filename == 'challenge_video.mp4':
+        if args.input == 'challenge_video.mp4':
 
             _, sxbinary = edge.threshold(hls[:, :, 1], thresh=(70, 255))
             sxbinary = edge.blur_gaussian(sxbinary, ksize=3)  # Reduce noise
@@ -776,7 +775,7 @@ def main():
         # Capture one frame at a time
         success, frame = cap.read()
         #  improve video brightness
-        if filename == 'challenge_video.mp4':
+        if args.input == 'challenge_video.mp4':
             frame = increase_brightness(frame, value=60)
 
             #  improve video contrast
@@ -793,29 +792,29 @@ def main():
             original_frame = frame.copy()
 
             # Create a Lane object
-            lane_obj = Lane(orig_frame=original_frame,filename=filename)
+            lane_obj = Lane(orig_frame=original_frame,filename=args.input)
 
             # Perform thresholding to isolate lane lines
             lane_line_markings = lane_obj.get_line_markings()
 
             # Plot the region of interest on the image
-            lane_obj.plot_roi(plot=debugFlag)
+            lane_obj.plot_roi(plot=False)
 
-            warped_frame = lane_obj.perspective_transform(plot=debugFlag)
+            warped_frame = lane_obj.perspective_transform(plot=False)
 
             # ---
             # Generate the image histogram to serve as a starting point
             # for finding lane line pixels
-            histogram = lane_obj.calculate_histogram(plot=debugFlag)
+            histogram = lane_obj.calculate_histogram(plot=False)
 
             # Find lane line pixels using the sliding window method
             left_fit, right_fit = lane_obj.get_lane_line_indices_sliding_windows(
-                plot=debugFlag)
+                plot=False)
             # Fill in the lane line
-            lane_obj.get_lane_line_previous_window(left_fit, right_fit, plot=debugFlag)
+            lane_obj.get_lane_line_previous_window(left_fit, right_fit, plot=False)
 
             # Overlay lines on the original frame
-            frame_with_lane_lines = lane_obj.overlay_lane_lines(plot=debugFlag)
+            frame_with_lane_lines = lane_obj.overlay_lane_lines(plot=False)
 
             # Calculate lane line curvature (left and right lane lines)
             lane_obj.calculate_curvature(print_to_terminal=False)
