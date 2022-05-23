@@ -11,7 +11,7 @@
  write this command in cmd  >>
     **python debug.py -i inputVideoPath -o outputVideoPath**
     
-3.Radius of curvature
+3.**Radius of curvature**
 we calculated the Radius of curvature given the polynomial fit for both left and right lanes by substituting in the formula 
 <a href="https://www.intmath.com/applications-differentiation/8-radius-curvature.php">here</a>
 we also scaled the Distance units from pixels to meters; we assumed 7 meters per 400 pixels in the Y direction and 3.7 meters per 255 pixels in the X direction
