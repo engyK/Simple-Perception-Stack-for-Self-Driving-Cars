@@ -17,6 +17,9 @@ we calculated the Radius of curvature given the polynomial fit for both left and
 we also scaled the Distance units from pixels to meters; we assumed 7 meters per 400 pixels in the Y direction and 3.7 meters per 255 pixels in the X direction
 then we take the average of both curvatures
 
+4.**Car Offset:**<br>
+we assumed that the veichle centre is the same as the image centre then we calculated the lane centre. Thus, the car offset is simply the car centre minus the lane centre.
+we used the same mapping between the pixels and the meters.
     
  ## Phase 2
  1.  write the following command in cmd >>
