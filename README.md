@@ -8,7 +8,6 @@
     **python Lane.py -i inputVideoPath -o outputVideoPath**
 
 2.  to run debug mode
-
  write this command in cmd  >>
     **python debug.py -i inputVideoPath -o outputVideoPath**
     
