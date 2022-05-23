@@ -12,9 +12,7 @@
     **python debug.py -i inputVideoPath -o outputVideoPath**
     
  ## Phase 2
- 1.  write the following command in cmd
+ 1.  write the following command in cmd >>
     **python phase2.py -i inputVideoPath -o outputVideoPath**
     
-   ### **Note:** the videos must be in the same directory of the python scripts and the bash script
- 
-
+   ### **Note:** the videos must be in the same directory of the python project
